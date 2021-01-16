@@ -21,17 +21,36 @@ public class ElevatorSystem extends Subsystem {
         mCurrentStep = 0;
     }
 
+    public int getCurrentStep() {
+        return mCurrentStep;
+    }
+
+    public int getMinStep() {
+        return 0;
+    }
+
+    public int getMaxStep() {
+        return mStepSensors.size() - 1;
+    }
+
     public boolean isAtStep(int step) {
+        if (mCurrentStep > getMaxStep()) {
+            return false;
+        }
+        if (mCurrentStep < getMinStep()) {
+            return false;
+        }
+
         return mStepSensors.get(step).get();
     }
 
     public void raise() {
-        if (mCurrentStep == mStepSensors.size() - 1) {
+        if (mCurrentStep >= getMaxStep()) {
             return;
         }
         if (isAtStep(mCurrentStep + 1)) {
             mCurrentStep++;
-            if (mCurrentStep == mStepSensors.size() - 1) {
+            if (mCurrentStep == getMaxStep()) {
                 return;
             }
         }
@@ -40,12 +59,12 @@ public class ElevatorSystem extends Subsystem {
     }
 
     public void lower() {
-        if (mCurrentStep == 0) {
+        if (mCurrentStep <= getMinStep()) {
             return;
         }
         if (isAtStep(mCurrentStep - 1)) {
             mCurrentStep--;
-            if (mCurrentStep == 0) {
+            if (mCurrentStep == getMinStep()) {
                 return;
             }
         }
