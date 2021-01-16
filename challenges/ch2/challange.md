@@ -23,6 +23,8 @@
 ![shooter](https://s3-us-west-2.amazonaws.com/courses-images-archive-read-only/wp-content/uploads/sites/222/2014/12/20101958/Figure_03_04_01.jpg)
 ![equations](https://uploads-cdn.omnicalculator.com/images/projectile-motion/projectile-motion.png)
 
+ - [Projectile Motion](https://courses.lumenlearning.com/physics/chapter/3-4-projectile-motion/)
+
 ישנם שתי משוואות במצב כזה:
 </div>
 <pre>
