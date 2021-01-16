@@ -1,0 +1,3 @@
+include ':challenges:ch1:solution'
+include ':challenges:ch2:solution'
+include ':challenges:ch3:solution'

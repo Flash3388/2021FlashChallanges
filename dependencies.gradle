@@ -1,0 +1,5 @@
+ext {
+    flashlib = {
+        return ["com.flash3388.flashlib:flashlib.frc.robot:2020.2.0-alpha.1"]
+    }
+}
