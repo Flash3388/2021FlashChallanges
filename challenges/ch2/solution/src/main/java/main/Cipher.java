@@ -1,13 +1,16 @@
+package main;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class Cypher {
+public class Cipher {
+
     private static final int LETTERS_IN_ALPHABET = 26;
 
     private final int shiftValue;
 
-    public Cypher(int shiftValue) {
+    public Cipher(int shiftValue) {
         this.shiftValue = shiftValue%LETTERS_IN_ALPHABET;
     }
 
@@ -16,15 +19,15 @@ public class Cypher {
     }
 
     public String encrypt(String str) {
-        String encrypted = "";
+        StringBuilder encrypted = new StringBuilder();
 
         for(char c: str.toCharArray())
             if(Character.isAlphabetic(c))
-                encrypted += correctEncryptionOverflow((char) (c + shiftValue), c);
+                encrypted.append(correctEncryptionOverflow((char) (c + shiftValue), c));
             else
-                encrypted += c;
+                encrypted.append(c);
 
-        return encrypted;
+        return encrypted.toString();
     }
 
     public String decrypt(Path path) throws IOException {
@@ -32,15 +35,15 @@ public class Cypher {
     }
 
     public String decrypt(String encrypted) {
-        String decrypted = "";
+        StringBuilder decrypted = new StringBuilder();
 
         for(char c: encrypted.toCharArray())
             if(Character.isAlphabetic(c))
-                decrypted += correctDecryptionOverflow((char) (c - shiftValue), c);
+                decrypted.append(correctDecryptionOverflow((char) (c - shiftValue), c));
             else
-                decrypted += c;
+                decrypted.append(c);
 
-        return decrypted;
+        return decrypted.toString();
     }
 
     private char correctDecryptionOverflow(char decryptedChar, char initialLetter) {
