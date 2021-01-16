@@ -23,6 +23,9 @@ public class Robot extends DelegatingRobotControl implements IterativeFrcRobot {
         super(robotControl);
 
         List<DigitalInput> stepSensors = new ArrayList<>();
+        for (int sensorConnection : RobotMap.STEP_SENSORS) {
+            stepSensors.add(new DigitalInput(sensorConnection));
+        }
 
         mElevatorSystem = new ElevatorSystem(
                 new SpeedControllers()
