@@ -29,7 +29,8 @@ public class Robot extends DelegatingRobotControl implements IterativeFrcRobot {
 
         mElevatorSystem = new ElevatorSystem(
                 new SpeedControllers()
-                    .add(new WPI_TalonSRX(RobotMap.ELEVATOR))
+                        .add(new WPI_TalonSRX(RobotMap.ELEVATOR))
+                        .add(new WPI_TalonSRX(RobotMap.ELEVATOR2))
                     .build(),
                 stepSensors
         );
