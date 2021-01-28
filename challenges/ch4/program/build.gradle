@@ -1,0 +1,48 @@
+plugins {
+    id "application"
+}
+
+application {
+    mainClassName = 'app.Main'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    runtimeOnly group: 'org.xerial', name: 'sqlite-jdbc', version: '3.14.2'
+}
+
+task createRunBatch {
+    def runFile = file("$buildDir/run.bat")
+    outputs.file runFile
+    doLast {
+        if (runFile.exists()) {
+            runFile.delete()
+        }
+        runFile.parentFile.mkdirs()
+        runFile.createNewFile()
+        runFile.write('bin/program.bat')
+    }
+}
+
+distributions {
+    main {
+        contents {
+            def dbFile = file('dist/mdn-base.db')
+            if (hasProperty('FULL_DB')) {
+                dbFile = file('dist/mdn-full.db')
+            }
+
+            from(dbFile) {
+                into ''
+                rename dbFile.name, 'mdn.db'
+            }
+
+            from(createRunBatch) {
+                into ''
+            }
+        }
+    }
+}
