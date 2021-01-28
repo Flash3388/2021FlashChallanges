@@ -2,9 +2,7 @@ plugins {
     id "application"
 }
 
-application {
-    mainClassName = 'app.Main'
-}
+sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     mavenCentral()
@@ -12,6 +10,10 @@ repositories {
 
 dependencies {
     runtimeOnly group: 'org.xerial', name: 'sqlite-jdbc', version: '3.14.2'
+}
+
+application {
+    mainClassName = 'app.Main'
 }
 
 task createRunBatch {
