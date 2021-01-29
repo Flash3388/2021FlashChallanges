@@ -1,0 +1,8 @@
+binaries/PcdDxe.efi filter=lfs diff=lfs merge=lfs -text
+binaries/aspell filter=lfs diff=lfs merge=lfs -text
+binaries/dehtmldiff filter=lfs diff=lfs merge=lfs -text
+binaries/dwz filter=lfs diff=lfs merge=lfs -text
+binaries/ecryptfsd filter=lfs diff=lfs merge=lfs -text
+binaries/libsmbclient.so.0 filter=lfs diff=lfs merge=lfs -text
+binaries/libsmi.so.2 filter=lfs diff=lfs merge=lfs -text
+binaries/libsnapd-glib.so.1 filter=lfs diff=lfs merge=lfs -text
