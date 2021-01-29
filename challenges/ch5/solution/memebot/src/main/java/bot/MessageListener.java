@@ -1,18 +1,14 @@
 package bot;
 
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.PrintWriter;
 import java.util.Random;
 
 public class MessageListener extends ListenerAdapter {
 
-    //private static final String CHANNEL_NAME = "דיבור-קבוצה-1";
     private static final String CHANNEL_NAME = "general⭐";
 
     private final File mMemesFolder;
@@ -42,26 +38,6 @@ public class MessageListener extends ListenerAdapter {
             if (memeFile != null) {
                 channel.sendFile(memeFile)
                     .queue();
-            }
-        } else if (message.startsWith("!echo")) {
-            for (Message.Attachment attachment : event.getMessage().getAttachments()) {
-                if (attachment.isImage()) {
-                    attachment.downloadToFile()
-                            .whenComplete((file, ex)-> {
-                                try {
-                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                    try (PrintWriter printStream = new PrintWriter(baos)) {
-                                        printStream.println("```");
-                                        new Img2Ascii().convertToAscii(file, printStream);
-                                        printStream.println("```");
-                                    }
-                                    channel.sendFile(baos.toByteArray(), file.getName() + ".txt")
-                                            .queue();
-                                } catch (Throwable t){
-                                    ex.printStackTrace();
-                                }
-                            });
-                }
             }
         }
     }
