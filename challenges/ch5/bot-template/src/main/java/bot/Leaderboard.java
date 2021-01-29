@@ -1,4 +1,4 @@
-package bot.sheets;
+package bot;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -14,6 +14,7 @@ import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,24 +31,28 @@ public class Leaderboard {
     private static final String NAMES_VALUE_RANGE = "passwords!A2:A6";
     private static final String SCORES_VALUE_RANGE = "passwords!C2:Z6";
 
-    private static final String APPLICATION_NAME = "Google Sheets API Java Quickstart";
+    private static final String APPLICATION_NAME = "Flash discord bot";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
 
     private static final List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS_READONLY);
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
-    public Map<String, Double> getLeaderboard() throws GeneralSecurityException, IOException {
+    private final Sheets mService;
+
+    public Leaderboard() throws GeneralSecurityException, IOException {
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
 
-        Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+        mService = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(APPLICATION_NAME)
                 .build();
+    }
 
-        ValueRange namesResponse = service.spreadsheets().values()
+    public Map<String, Double> getLeaderboard() throws IOException {
+        ValueRange namesResponse = mService.spreadsheets().values()
                 .get(LEADERBOARD_SPREADSHEET_ID, NAMES_VALUE_RANGE)
                 .execute();
-        ValueRange valuesResponse = service.spreadsheets().values()
+        ValueRange valuesResponse = mService.spreadsheets().values()
                 .get(LEADERBOARD_SPREADSHEET_ID, SCORES_VALUE_RANGE)
                 .execute();
 
@@ -92,11 +97,14 @@ public class Leaderboard {
         // Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
-                .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
+                .setDataStoreFactory(new FileDataStoreFactory(new File(TOKENS_DIRECTORY_PATH)))
                 .setAccessType("offline")
                 .build();
-        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
-        return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
+        LocalServerReceiver receiver = new LocalServerReceiver.Builder()
+                .setPort(8888)
+                .build();
+        return new AuthorizationCodeInstalledApp(flow, receiver)
+                .authorize("user");
     }
 
 }

@@ -1,20 +1,13 @@
 package bot;
 
-import bot.sheets.Leaderboard;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import java.io.File;
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.Comparator;
 import java.util.Map;
-import java.util.Random;
 
 public class MessageListener extends ListenerAdapter {
-
-    private static final String CHANNEL_NAME = "general⭐";
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
@@ -30,31 +23,38 @@ public class MessageListener extends ListenerAdapter {
             return;
         }
 
-        if (message.startsWith("!leaderboard")) {
-            try {
-                Map<String, Double> scores = new Leaderboard().getLeaderboard();
-
-                StringBuilder builder = new StringBuilder();
-                builder.append("|\tTeam\t|\tScore\t|\n");
-                scores.entrySet()
-                        .stream()
-                        .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                        .forEachOrdered((entry)-> {
-                            builder.append("|\t")
-                                    .append(entry.getKey())
-                                    .append("\t|\t")
-                                    .append(entry.getValue())
-                                    .append("\t|\n");
-                        });
-                channel.sendMessage(builder.toString())
-                    .queue();
-            } catch (GeneralSecurityException | IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            handleMessage(event);
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
     }
 
     private boolean isOurChannel(MessageChannel channel) {
-        return channel.getName().equalsIgnoreCase(CHANNEL_NAME);
+        return channel.getName().equalsIgnoreCase(BotConstants.CHANNEL_NAME);
+    }
+
+    private void handleMessage(MessageReceivedEvent event) throws Exception {
+        MessageChannel channel = event.getChannel();
+        String message = event.getMessage().getContentDisplay();
+
+        if (message.startsWith("!leaderboard")) {
+            Map<String, Double> scores = new Leaderboard().getLeaderboard();
+
+            StringBuilder builder = new StringBuilder();
+            builder.append("|\tTeam\t|\tScore\t|\n");
+            scores.entrySet()
+                    .stream()
+                    .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                    .forEachOrdered((entry)-> {
+                        builder.append("|\t")
+                                .append(entry.getKey())
+                                .append("\t|\t")
+                                .append(entry.getValue())
+                                .append("\t|\n");
+                    });
+            channel.sendMessage(builder.toString())
+                    .queue();
+        }
     }
 }
