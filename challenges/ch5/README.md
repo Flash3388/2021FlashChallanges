@@ -13,3 +13,5 @@ Bot ideas:
 Links:
 - https://discord.com/developers/applications
 - https://discord.com/oauth2/authorize?client_id=BOT_CLIENT_ID&permissions=BOT_PERMISSIONS&scope=bot
+- https://console.developers.google.com/apis/dashboard?project=flashcompcredent-1611944669688
+
