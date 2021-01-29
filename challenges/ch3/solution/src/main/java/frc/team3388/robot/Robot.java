@@ -18,7 +18,7 @@ public class Robot extends DelegatingRobotControl implements IterativeFrcRobot {
     // The firing angle of the shooter.
     private static final double SHOOTER_FIRING_ANGLE_DEG = 25;
     // The maximum speed of the shooter. Used for speed conversion.
-    private static final double SHOOTER_MAX_SPEED_METERS_SECOND = 2;
+    private static final double SHOOTER_MAX_SPEED_METERS_SECOND = 3;
 
     private final ShooterSystem mShooterSystem;
     private final FiringAlgorithm mFiringAlgorithm;

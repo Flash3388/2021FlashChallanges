@@ -3,6 +3,7 @@ include ':challenges:ch2:solution'
 include ':challenges:ch3:solution'
 include ':challenges:ch4:program'
 include ':challenges:ch5:bot-template'
+include ':challenges:ch5:solution:memebot'
 
 include ':challenges:ch1:team-solutions:team5'
 include ':challenges:ch3:team-solutions:team5'
