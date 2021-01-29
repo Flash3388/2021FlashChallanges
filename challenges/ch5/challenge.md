@@ -3,8 +3,19 @@
 תיאור!!!!!
 
 ישמו בוט ל-discord אשר מדפיס רשימת מיקום של כל הקבוצות בתחרות כאשר משתמשים כותבים `!leaderboard` בערוץ של הקבוצה שלכם.
+כלומר, כאשר בערוץ ספציפי (לבחירתכם), משתמש מסוים רושם:
 
-השתמשו [template](source/template) כדי להתחיל את העבודה. כדי לפתוח את התבנית, פתחו את IntelliJ IDEA ובלשונית File->Open פתחו את התיקייה של התבנית.
+</div>
+
+```
+!leaderboard
+```
+
+<div dir="rtl">
+  
+על ה-bot להשיג את ה-leaderboard ולשלוח אותו.
+
+השתמשו [template](bot-template) כדי להתחיל את העבודה. כדי לפתוח את התבנית, פתחו את IntelliJ IDEA ובלשונית File->Open פתחו את התיקייה של התבנית.
 בקובץ `BotConstants` שנו את הקבוע `TOKEN` לערך ספציפי אותו תבקשו מתום כאשר אתם מתחילים את האתגר.
 שנו בקובץ `BotConstants` שנו את הקבוע `CHANNEL_NAME` לערוץ של הקבוצה שלכם בו תרצו להקשיב להודעות.
 
@@ -26,7 +37,7 @@ String channelName = channel.getName(); // get the channel name
 
 <div dir="rtl">
 
-העזרו במחלקה [`Leaderboard`](source/Leaderboard.java) בכדי להשיג מידע עדכני על ניקוד כל הקבוצות:
+העזרו במחלקה `Leaderboard` בכדי להשיג מידע עדכני על ניקוד כל הקבוצות:
 
 </div>
 
@@ -40,5 +51,11 @@ Map<String, Double> scores = leaderboard.getLeaderboard();
 כאשר `scores` היא מפה של שם קבוצה לניקוד של הקבוצה.
 
 כדי להריץ את ה-bot, הריצו ב-terminal של IntelliJ את הפקודה `gradlew.bat run`.
+כאשר ה-bot רץ, אתם יכולים לבדוק את ה-bot ב-discord על ידי לשלוח הודעות.
+
+## IMPORTANT
+
+שימוש בבוט discord שגורם ל-spam יגרום לביטול ההרשאות שלו ולהורדת נקודות לקבוצה.
+אנא שילחו רק הודעות שצריך חלק מהתרגיל.
 
 </div>
