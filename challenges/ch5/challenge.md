@@ -37,6 +37,8 @@ String channelName = channel.getName(); // get the channel name
 
 <div dir="rtl">
 
+להלן דוגמא ל-bot שמאזין לפקודות: https://github.com/DV8FromTheWorld/JDA/blob/master/src/examples/java/MessageListenerExample.java
+
 העזרו במחלקה `Leaderboard` בכדי להשיג מידע עדכני על ניקוד כל הקבוצות:
 
 </div>
