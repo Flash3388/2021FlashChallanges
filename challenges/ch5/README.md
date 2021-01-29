@@ -9,3 +9,7 @@ Bot ideas:
   Converts the image into ascii using a code we provide them.
 - Leaderboard: bot receives a message and prints the leaderboard which
     is received from a code we provide.
+
+Links:
+- https://discord.com/developers/applications
+- https://discord.com/oauth2/authorize?client_id=BOT_CLIENT_ID&permissions=BOT_PERMISSIONS&scope=bot
