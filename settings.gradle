@@ -6,6 +6,7 @@ include ':challenges:ch5:bot-template'
 include ':challenges:ch5:solution:memebot'
 include ':challenges:ch5:solution:img2asciibot'
 include ':challenges:ch5:solution:leaderbot'
+include ':challenges:ch6:solution'
 
 include ':challenges:ch1:team-solutions:team5'
 include ':challenges:ch3:team-solutions:team5'
