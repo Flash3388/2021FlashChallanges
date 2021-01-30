@@ -8,9 +8,15 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 repositories {
     mavenCentral()
     jcenter()
+
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
+    implementation name: 'leaderboardlib-all'
+
     implementation 'net.dv8tion:JDA:4.2.0_227'
 }
 

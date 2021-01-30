@@ -4,6 +4,10 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import sheets.Leaderboard;
+
+import java.util.Map;
+
 public class MessageListener extends ListenerAdapter {
 
     @Override
@@ -35,5 +39,8 @@ public class MessageListener extends ListenerAdapter {
         // TODO: IMPLEMENT THIS
         //  check if a user requested to print the leaderboard
         //  if yes: sent the leaderboard to the user
+
+        Leaderboard leaderboard = new Leaderboard();
+        Map<String, Double> scores = leaderboard.getLeaderboard();
     }
 }
