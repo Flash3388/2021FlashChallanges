@@ -1,6 +1,7 @@
 package app.db;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,6 +24,10 @@ public class JdbcDatabase implements Database {
     }
 
     public static JdbcDatabase open(Path path) throws ClassNotFoundException, SQLException {
+        if (!Files.exists(path)) {
+            throw new SQLException("missing db file");
+        }
+
         Class.forName("org.sqlite.JDBC");
         Connection connection = DriverManager.getConnection(String.format(
                 "jdbc:sqlite:%s",
