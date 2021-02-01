@@ -1,4 +1,4 @@
-```
+```java
 public static void main(String[] args) {
         File folder = new File("binaries");
         File[] binaries = folder.listFiles();
