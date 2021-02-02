@@ -11,8 +11,12 @@ import java.util.stream.Collectors;
 
 public class Resources {
 
-    public static String getResourceContent(String path) throws IOException {
-        try(InputStream inputStream = Scrambler.class.getClassLoader().getResourceAsStream(path);
+    public static String getResourceContent(Class<?> caller, String path) throws IOException {
+        return getResourceContent(caller.getClassLoader(), path);
+    }
+
+    public static String getResourceContent(ClassLoader classLoader, String path) throws IOException {
+        try(InputStream inputStream = classLoader.getResourceAsStream(path);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             return bufferedReader.lines()
                     .collect(Collectors.joining("\n"));

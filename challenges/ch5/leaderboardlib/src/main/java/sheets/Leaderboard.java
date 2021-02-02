@@ -14,6 +14,7 @@ import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import crypto.Scrambler;
+import io.Resources;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,7 +34,7 @@ import java.util.Map;
 public class Leaderboard {
 
     private static final String NAMES_VALUE_RANGE = "passwords!A2:A6";
-    private static final String SCORES_VALUE_RANGE = "passwords!C2:Z6";
+    private static final String SCORES_VALUE_RANGE = "passwords!C2:C6";
 
     private static final String APPLICATION_NAME = "Flash discord bot";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
@@ -41,16 +42,20 @@ public class Leaderboard {
 
     private static final List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS_READONLY);
 
-    private static final String SPREADSHEETID_FILE_PATH = "/spreadsheetid.txt.scrambled";
-    private static final String CREDENTIALS_FILE_PATH = "/credentialsid.json.scrambled";
+    private static final String SPREADSHEETID_FILE_PATH = "spreadsheetid.txt.scrambled";
+    private static final String CREDENTIALS_FILE_PATH = "credentials.json.scrambled";
 
     private static final String LEADERBOARD_SPREADSHEET_ID;
     private static final String CREDENTIALS_DATA;
 
     static {
         Scrambler scrambler = new Scrambler();
-        LEADERBOARD_SPREADSHEET_ID = scrambler.unscramble(loadStringFromFile(SPREADSHEETID_FILE_PATH));
-        CREDENTIALS_DATA = scrambler.unscramble(loadStringFromFile(CREDENTIALS_FILE_PATH));
+        try {
+            LEADERBOARD_SPREADSHEET_ID = scrambler.unscramble(Resources.getResourceContent(Leaderboard.class, SPREADSHEETID_FILE_PATH));
+            CREDENTIALS_DATA = scrambler.unscramble(Resources.getResourceContent(Leaderboard.class, CREDENTIALS_FILE_PATH));
+        } catch (Exception e) {
+            throw new Error(e);
+        }
     }
 
     private final Sheets mService;
@@ -115,17 +120,5 @@ public class Leaderboard {
                 .build();
         return new AuthorizationCodeInstalledApp(flow, receiver)
                 .authorize("user");
-    }
-
-    private static String loadStringFromFile(String filePath) {
-        try {
-            Path file = new File(Leaderboard.class.getClassLoader()
-                    .getResource(filePath)
-                    .toURI())
-                    .toPath();
-            return new String(Files.readAllBytes(file), StandardCharsets.UTF_8);
-        } catch (URISyntaxException | IOException e) {
-            throw new Error(e);
-        }
     }
 }

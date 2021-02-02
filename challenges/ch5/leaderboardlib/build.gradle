@@ -23,3 +23,11 @@ task copySecretFiles(type: Copy) {
 }
 
 tasks.jar.dependsOn copySecretFiles
+
+shadowJar {
+    dependencies {
+        exclude(dependency {
+            it.moduleGroup.startsWith('com.fasterxml')
+        })
+    }
+}

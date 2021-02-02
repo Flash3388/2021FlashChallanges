@@ -19,7 +19,7 @@ public class Scrambler {
 
     public Scrambler() {
         try {
-            String content = Resources.getResourceContent("kps.asd");
+            String content = Resources.getResourceContent(Scrambler.class, "kps.asd");
             mCipher = new AesCipher(content);
         } catch (CryptoException | IOException e) {
             throw new Error(e);

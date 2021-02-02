@@ -12,11 +12,11 @@ public class BotConstants {
     static {
         Scrambler scrambler = new Scrambler();
         try {
-            TOKEN = scrambler.unscramble(Resources.getResourceContent("testbottoken.txt.scrambled"));
+            TOKEN = scrambler.unscramble(Resources.getResourceContent(BotConstants.class, "testbottoken.txt.scrambled"));
         } catch (IOException e) {
             throw new Error(e);
         }
     }
 
-    public static final String CHANNEL_NAME = "general";
+    public static final String CHANNEL_NAME = "general⭐";
 }
