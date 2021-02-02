@@ -20,20 +20,3 @@ dependencies {
 application {
     mainClassName = 'bot.Main'
 }
-
-distributions {
-    main {
-        contents {
-            from(fileTree('../../scrambled-data')) {
-                into 'data'
-            }
-        }
-    }
-}
-
-task copySecretFiles(type: Copy) {
-    from fileTree('../../scrambled-data')
-    into file('data')
-}
-
-tasks.run.dependsOn copySecretFiles
