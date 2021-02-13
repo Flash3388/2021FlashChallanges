@@ -21,7 +21,7 @@ private void handleMessage(MessageReceivedEvent event) throws Exception {
             Collections.reverse(scoresSorted);
 
             for (Map.Entry<String, Double> pair : scoresSorted) {
-                double score = pair.getValue().doubleValue() / 2;
+                double score = pair.getValue().doubleValue();
                 eb.addField(String.format("%s", pair.getKey()), String.format("Score: %f", score), false);
             }
 

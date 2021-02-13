@@ -15,7 +15,7 @@
             String message = "";
 
             for (Map.Entry<String, Double> entry : sortedScores) {
-                message += String.format("%s: %d\n", entry.getKey(), Math.round(entry.getValue() / 2));
+                message += String.format("%s: %d\n", entry.getKey(), Math.round(entry.getValue()));
             }
 
             event.getChannel().sendMessage(message).queue();
