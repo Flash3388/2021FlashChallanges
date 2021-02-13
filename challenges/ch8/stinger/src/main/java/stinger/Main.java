@@ -47,7 +47,7 @@ public class Main {
                 stinger.stop();
             }
         } catch (Throwable t) {
-
+            t.printStackTrace();
         } finally {
             executorService.shutdownNow();
         }

@@ -1,14 +1,14 @@
 package stinger.comm;
 
+import stinger.Constants;
 import stinger.Module;
 import stinger.StingerEnvironment;
+import stinger.logging.Logger;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 public class CommunicationModule implements Module {
-
-    private static final long COMMUNICATION_INTERVAL = 3600;
 
     private final ExecutorService mExecutorService;
     private final Communicator mCommunicator;
@@ -24,7 +24,7 @@ public class CommunicationModule implements Module {
 
     @Override
     public void start(StingerEnvironment environment) {
-        mFuture = mExecutorService.submit(new Task(mCommunicator, environment));
+        mFuture = mExecutorService.submit(new Task(mCommunicator, environment, environment.getLogger()));
     }
 
     @Override
@@ -39,22 +39,26 @@ public class CommunicationModule implements Module {
 
         private final Communicator mCommunicator;
         private final StingerEnvironment mEnvironment;
+        private final Logger mLogger;
 
-        private Task(Communicator communicator, StingerEnvironment environment) {
+        private Task(Communicator communicator, StingerEnvironment environment, Logger logger) {
             mCommunicator = communicator;
             mEnvironment = environment;
+            mLogger = logger;
         }
 
         @Override
         public void run() {
             try {
                 while (!Thread.interrupted()) {
-                    Thread.sleep(COMMUNICATION_INTERVAL);
+                    Thread.sleep(Constants.COMMUNICATION_INTERVAL_MS);
 
                     try {
+                        mLogger.info("Starting transaction");
                         TransactionResult result = mCommunicator.doTransaction(mEnvironment);
                         mEnvironment.getCommandQueue().addCommands(result.getCommands());
                     } catch (CommunicationException e) {
+                        mLogger.error("Transaction error", e);
                     }
                 }
             } catch (InterruptedException e) { }

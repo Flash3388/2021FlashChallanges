@@ -56,6 +56,7 @@ public class LoggingModule implements Module {
 
                     if (mLoggerControl.getRecordCount() == 1000) {
                         try {
+                            mLogger.info("Doing rotation");
                             Product product = mLoggerControl.rotate();
                             mStingerEnvironment.getStorage().store(product);
                         } catch (IOException | StorageException e) {

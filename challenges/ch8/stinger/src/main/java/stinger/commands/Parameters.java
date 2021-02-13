@@ -1,8 +1,37 @@
 package stinger.commands;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Parameters {
+
+    public static class Builder {
+
+        private final Map<String, Object> mParameters;
+
+        public Builder() {
+            mParameters = new HashMap<>();
+        }
+
+        public Builder putInt(String key, int value) {
+            mParameters.put(key, value);
+            return this;
+        }
+
+        public Builder putDouble(String key, double value) {
+            mParameters.put(key, value);
+            return this;
+        }
+
+        public Builder putString(String key, String value) {
+            mParameters.put(key, value);
+            return this;
+        }
+
+        public Parameters build() {
+            return new Parameters(mParameters);
+        }
+    }
 
     private final Map<String, Object> mParameters;
 

@@ -2,6 +2,7 @@ package stinger.commands;
 
 import stinger.Module;
 import stinger.StingerEnvironment;
+import stinger.logging.Logger;
 
 import java.util.Collection;
 import java.util.concurrent.BlockingQueue;
@@ -25,7 +26,7 @@ public class CommandModule implements Module, CommandQueue {
 
     @Override
     public void start(StingerEnvironment environment) {
-        mFuture = mExecutorService.submit(new Task(mCommandQueue, environment));
+        mFuture = mExecutorService.submit(new Task(mCommandQueue, environment, environment.getLogger()));
     }
 
     @Override
@@ -50,10 +51,12 @@ public class CommandModule implements Module, CommandQueue {
 
         private final BlockingQueue<Executable> mCommandQueue;
         private final StingerEnvironment mStingerEnvironment;
+        private final Logger mLogger;
 
-        private Task(BlockingQueue<Executable> commandQueue, StingerEnvironment stingerEnvironment) {
+        private Task(BlockingQueue<Executable> commandQueue, StingerEnvironment stingerEnvironment, Logger logger) {
             mCommandQueue = commandQueue;
             mStingerEnvironment = stingerEnvironment;
+            mLogger = logger;
         }
 
         @Override
@@ -62,9 +65,10 @@ public class CommandModule implements Module, CommandQueue {
                 while (!Thread.interrupted()) {
                     try {
                         Executable command = mCommandQueue.take();
+                        mLogger.info("Executing command %s", command);
                         command.execute(mStingerEnvironment);
                     } catch (CommandException e) {
-
+                        mLogger.error("CommandModule exec error", e);
                     }
                 }
             } catch (InterruptedException e) {}

@@ -16,6 +16,16 @@ public class Stinger {
         for (Module module : mModules) {
             module.start(mEnvironment);
         }
+
+        OnStart.onStart(mEnvironment);
+
+        while (true) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
     }
 
     public void stop() {

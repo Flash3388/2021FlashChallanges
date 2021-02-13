@@ -34,9 +34,13 @@ public class StorageIndex {
 
     public static StorageIndex inFile(Path dbFile, Logger logger) throws StorageException {
         try {
+            if (!Files.exists(dbFile)) {
+                Files.createFile(dbFile);
+            }
+
             Database database = JdbcDatabase.open(dbFile);
             return new StorageIndex(database, logger);
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (ClassNotFoundException | SQLException | IOException e) {
             throw new StorageException(e);
         }
     }
@@ -99,8 +103,9 @@ public class StorageIndex {
     }
 
     private void createTable() throws DatabaseException {
-        mDatabase.update(String.format("CREATE TABLE IF NOT EXISTS pros (%s,%s)",
+        mDatabase.update(String.format("CREATE TABLE IF NOT EXISTS pros (%s,%s,%s)",
                 "prid NVARCHAR UNIQUE NOT NULL",
+                "type INT NOT NULL",
                 "path NVARCHAR NOT NULL"));
     }
 

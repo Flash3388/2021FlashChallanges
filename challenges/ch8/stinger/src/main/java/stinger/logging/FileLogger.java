@@ -6,6 +6,8 @@ import stinger.storage.impl.FileProduct;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,17 +33,26 @@ public class FileLogger implements Logger, LoggerControl {
 
     @Override
     public void info(String message, Object... args) {
-
+        message = String.format(message, args);
+        message = String.format("[DEBUG]: %s", message);
+        log(message);
     }
 
     @Override
     public void error(String message, Object... args) {
-
+        message = String.format(message, args);
+        message = String.format("[ERROR]: %s", message);
+        log(message);
     }
 
     @Override
-    public void error(String message, Throwable t) {
+    public void error(String message, Throwable throwable) {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+        throwable.printStackTrace(printWriter);
 
+        message = String.format("[ERROR]: %s:\n\t%s", message, stringWriter.toString());
+        log(message);
     }
 
     @Override
@@ -64,12 +75,16 @@ public class FileLogger implements Logger, LoggerControl {
         return new FileProduct(oldFile);
     }
 
-    private void log(String data) throws IOException {
+    private void log(String data) {
         mLogLock.lock();
         try {
             BufferedOutputStream stream = getStream();
             stream.write(data.getBytes(StandardCharsets.UTF_8));
+
+            System.err.println(data);
+
             mRecordCount.incrementAndGet();
+        } catch (IOException e) {
         } finally {
             mLogLock.unlock();
         }

@@ -15,4 +15,9 @@ public class Executable {
     public void execute(StingerEnvironment environment) throws CommandException {
         mCommand.execute(environment, mParameters);
     }
+
+    @Override
+    public String toString() {
+        return String.format("Executable{commandType=%s}", mCommand.getClass().getName());
+    }
 }
