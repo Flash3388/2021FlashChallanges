@@ -1,0 +1,17 @@
+plugins {
+    id "application"
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':challenges:ch7:pdf')
+}
+
+application {
+    mainClassName = 'app.Main'
+}

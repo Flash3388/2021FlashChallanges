@@ -1,0 +1,13 @@
+plugins {
+    id "java-library"
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    api group: 'com.itextpdf', name: 'itextpdf', version: '5.5.13.2'
+}
