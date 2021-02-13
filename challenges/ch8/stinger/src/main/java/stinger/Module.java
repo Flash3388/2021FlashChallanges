@@ -2,6 +2,6 @@ package stinger;
 
 public interface Module {
 
-    void start();
+    void start(StingerEnvironment environment);
     void stop();
 }

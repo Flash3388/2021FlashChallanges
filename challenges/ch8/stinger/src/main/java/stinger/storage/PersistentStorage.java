@@ -20,7 +20,7 @@ public class PersistentStorage implements Storage {
     @Override
     public void store(Product product) throws StorageException {
         try {
-            StoredProduct storedProduct = storeNew(product);
+            PersistentStoredProduct storedProduct = storeNew(product);
             mStorageIndex.addProduct(storedProduct);
         } catch (IOException e) {
             throw new StorageException(e);
@@ -28,15 +28,15 @@ public class PersistentStorage implements Storage {
     }
 
     @Override
-    public Iterator<Product> storedProducts() throws StorageException {
-        return null;
+    public Iterator<StoredProduct> storedProducts() throws StorageException {
+        return mStorageIndex.storedProductsSnapshot();
     }
 
-    private StoredProduct storeNew(Product product) throws IOException {
+    private PersistentStoredProduct storeNew(Product product) throws IOException {
         String id = generateId();
         Path path = saveProductData(product, id);
 
-        return new StoredProduct(id, path);
+        return new PersistentStoredProduct(id, product.getType(), path);
     }
 
     private String generateId() {

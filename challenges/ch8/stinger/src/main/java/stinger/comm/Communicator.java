@@ -1,7 +1,8 @@
 package stinger.comm;
 
-import stinger.Module;
+import stinger.StingerEnvironment;
 
-public interface Communicator extends Module {
+public interface Communicator {
 
+    TransactionResult doTransaction(StingerEnvironment environment) throws CommunicationException;
 }
