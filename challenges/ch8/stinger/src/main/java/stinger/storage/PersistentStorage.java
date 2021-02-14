@@ -23,10 +23,11 @@ public class PersistentStorage implements Storage {
     }
 
     @Override
-    public void store(Product product) throws StorageException {
+    public String store(Product product) throws StorageException {
         try {
             InFileStoredProduct storedProduct = storeNew(product);
             mStorageIndex.addProduct(storedProduct);
+            return storedProduct.getId();
         } catch (IOException e) {
             throw new StorageException(e);
         }

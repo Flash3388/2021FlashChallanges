@@ -15,14 +15,8 @@ public class GetFileCommand implements Command {
 
     @Override
     public void execute(StingerEnvironment environment, Parameters parameters) throws CommandException {
-        try {
-            String pathStr = parameters.getString("path");
-            Path path = Paths.get(pathStr);
-
-            Product product = new FileProduct(path);
-            environment.getStorage().store(product);
-        } catch (StorageException e) {
-            throw new CommandException(e);
-        }
+        // TODO: IMPLEMENT
+        // This command should receive file information in the parameters (path)
+        // and return a product containing the file data
     }
 }

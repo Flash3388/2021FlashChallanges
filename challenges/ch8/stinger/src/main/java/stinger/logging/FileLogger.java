@@ -1,5 +1,6 @@
 package stinger.logging;
 
+import stinger.storage.StandardProductType;
 import stinger.storage.impl.FileProduct;
 import stingerlib.logging.AbstractFileLogger;
 import stingerlib.storage.Product;
@@ -46,7 +47,7 @@ public class FileLogger extends AbstractFileLogger implements LoggerControl {
             mLogLock.unlock();
         }
 
-        return new FileProduct(oldFile);
+        return new FileProduct(oldFile, StandardProductType.LOG);
     }
 
     @Override

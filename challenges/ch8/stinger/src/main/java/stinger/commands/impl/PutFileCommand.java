@@ -15,16 +15,8 @@ public class PutFileCommand implements Command {
 
     @Override
     public void execute(StingerEnvironment environment, Parameters parameters) throws CommandException {
-        try {
-            String pathStr = parameters.getString("path");
-            Path path = Paths.get(pathStr);
-
-            String dataEncoded = parameters.getString("data");
-            byte[] data = Base64.getDecoder().decode(dataEncoded);
-
-            Files.write(path, data);
-        } catch (IOException e) {
-            throw new CommandException(e);
-        }
+        // TODO: IMPLEMENT
+        // This command should receive file information in the parameters (path, content)
+        // and place the file in the path with the content
     }
 }
