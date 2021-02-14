@@ -2,9 +2,16 @@ package stinger.commands;
 
 import stinger.commands.impl.GetFileCommand;
 import stinger.commands.impl.PutFileCommand;
+import stinger.commands.impl.StopCommand;
 import stingerlib.commands.CommandType;
 
 public enum StandardCommandType implements CommandType {
+    STOP(0) {
+        @Override
+        public Command createCommand() {
+            return new StopCommand();
+        }
+    },
     PUT_FILE(1) {
         @Override
         public Command createCommand() {

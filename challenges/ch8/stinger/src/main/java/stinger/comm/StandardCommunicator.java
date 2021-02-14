@@ -31,9 +31,10 @@ public class StandardCommunicator implements Communicator {
     public TransactionResult doTransaction(StingerEnvironment environment) throws CommunicationException {
         Logger logger = environment.getLogger();
         logger.info("Opening transaction channel");
-        try (Channel channel = openChannel()) {
+        try (Channel channel = openChannel(environment)) {
             logger.info("Reading commands");
             List<Executable> commands = channel.readCommands();
+            logger.info("New commands %s", commands.toString());
 
             logger.info("Sending products");
             Iterator<StoredProduct> productIterator = environment.getStorage().storedProducts();
@@ -51,7 +52,8 @@ public class StandardCommunicator implements Communicator {
         }
     }
 
-    private Channel openChannel() throws IOException {
+    private Channel openChannel(StingerEnvironment environment) throws IOException {
+        environment.getLogger().info("Connecting %s", mConnector);
         StreamConnection connection = mConnector.connect(100);
         try {
             return new Channel(connection);

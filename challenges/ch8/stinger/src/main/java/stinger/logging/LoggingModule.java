@@ -4,7 +4,6 @@ import stinger.Constants;
 import stinger.Module;
 import stinger.StingerEnvironment;
 import stingerlib.logging.Logger;
-import stingerlib.logging.LoggerControl;
 import stingerlib.storage.Product;
 import stingerlib.storage.StorageException;
 
@@ -72,7 +71,10 @@ public class LoggingModule implements Module {
                         }
                     }
                 }
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+            } catch (Throwable t) {
+                mLogger.error("Unexpected error in LoggingModule", t);
+            }
 
             mLogger.info("Done LoggingModule");
         }

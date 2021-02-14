@@ -1,5 +1,6 @@
 package stinger.server.commands;
 
+import stinger.server.Constants;
 import stinger.server.Environment;
 import stingerlib.logging.Logger;
 
@@ -38,7 +39,7 @@ public class CommandsModule {
 
         private Task(Path commandsDir, Environment environment) {
             mCommandsCollector = new CommandsCollector(commandsDir, environment.getCommandQueue(),
-                    environment.getLogger());
+                    environment.getCommandTypes(), environment.getLogger());
             mLogger = environment.getLogger();
         }
 
@@ -46,15 +47,18 @@ public class CommandsModule {
         public void run() {
             try {
                 while (!Thread.interrupted()) {
-                    Thread.sleep(30 * 1000);
-
                     try {
                         mCommandsCollector.collectAll();
                     } catch (IOException e) {
                         mLogger.error("error collecting commands", e);
                     }
+
+                    Thread.sleep(Constants.COMMAND_COLLECT_INTERVAL_MS);
                 }
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+            } catch (Throwable t) {
+                mLogger.error("Unexpected error in CommandsModule", t);
+            }
         }
     }
 }

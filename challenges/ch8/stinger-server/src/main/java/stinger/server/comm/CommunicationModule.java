@@ -1,6 +1,7 @@
 package stinger.server.comm;
 
 import stinger.server.Environment;
+import stingerlib.logging.Logger;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -19,7 +20,7 @@ public class CommunicationModule {
     }
 
     public void start(Environment environment) {
-        mFuture = mExecutorService.submit(new Task(mCommunicator, environment));
+        mFuture = mExecutorService.submit(new Task(mCommunicator, environment, environment.getLogger()));
     }
 
     public void stop() {
@@ -39,20 +40,26 @@ public class CommunicationModule {
 
         private final Communicator mCommunicator;
         private final Environment mEnvironment;
+        private final Logger mLogger;
 
-        private Task(Communicator communicator, Environment environment) {
+        private Task(Communicator communicator, Environment environment, Logger logger) {
             mCommunicator = communicator;
             mEnvironment = environment;
+            mLogger = logger;
         }
 
         @Override
         public void run() {
-            while (!Thread.interrupted()) {
-                try {
-                    mCommunicator.handleNextClient(mEnvironment);
-                } catch (IOException e) {
-                    mEnvironment.getLogger().error("error handling client", e);
+            try {
+                while (!Thread.interrupted()) {
+                    try {
+                        mCommunicator.handleNextClient(mEnvironment);
+                    } catch (IOException e) {
+                        mLogger.error("error handling client", e);
+                    }
                 }
+            } catch (Throwable t) {
+                mLogger.error("Unexpected error in CommunicationModule", t);
             }
         }
     }

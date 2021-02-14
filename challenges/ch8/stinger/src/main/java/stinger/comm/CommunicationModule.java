@@ -4,6 +4,7 @@ import stinger.Constants;
 import stinger.Module;
 import stinger.StingerEnvironment;
 import stingerlib.logging.Logger;
+import stingerlib.net.CommunicationException;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -63,7 +64,10 @@ public class CommunicationModule implements Module {
                         mLogger.error("Transaction error", e);
                     }
                 }
-            } catch (InterruptedException e) { }
+            } catch (InterruptedException e) {
+            } catch (Throwable t) {
+                mLogger.error("Unexpected error in CommunicationModule", t);
+            }
 
             mLogger.info("Done CommunicationModule");
         }

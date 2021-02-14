@@ -72,4 +72,11 @@ public class Parameters implements Iterable<Map.Entry<String, Object>> {
     public Iterator<Map.Entry<String, Object>> iterator() {
         return mParameters.entrySet().iterator();
     }
+
+    @Override
+    public String toString() {
+        return "Parameters{" +
+                "mParameters=" + mParameters +
+                '}';
+    }
 }

@@ -34,11 +34,11 @@ public class ServerFiles {
     }
 
     public Path getCommandTypesFile() {
-        return mStingerDir.resolve("command.types");
+        return mStingerDir.resolve("command.types.json");
     }
 
     public Path getProductTypesFile() {
-        return mStingerDir.resolve("product.types");
+        return mStingerDir.resolve("product.types.json");
     }
 
     private Path existingDirectory(String name) throws IOException {

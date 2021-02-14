@@ -1,7 +1,5 @@
 package stinger.server.util;
 
-import stingerlib.commands.CommandType;
-
 import java.util.Collection;
 
 public class GenericKnownTypes<T extends GenericType<KEY>, KEY> implements KnownTypes<T, KEY> {

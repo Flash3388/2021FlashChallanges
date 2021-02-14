@@ -3,11 +3,11 @@ package stinger;
 import stinger.comm.CommunicationModule;
 import stinger.comm.StandardCommunicator;
 import stinger.commands.CommandModule;
+import stinger.logging.FileLogger;
 import stinger.logging.LoggingModule;
 import stinger.storage.PersistentStorage;
 import stinger.storage.Storage;
 import stinger.storage.StorageIndex;
-import stingerlib.logging.FileLogger;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -20,6 +20,8 @@ public class Main {
         ExecutorService executorService = Executors.newFixedThreadPool(5);
         try {
             StingerFiles files = new StingerFiles();
+
+            StingerControl stingerControl = new StringerControlImpl(Thread.currentThread());
 
             FileLogger logger = new FileLogger(files.getLogFile());
             Storage storage = new PersistentStorage(
@@ -38,11 +40,14 @@ public class Main {
                             communicationModule,
                             loggingModule
                     )),
-                    new StingerEnvironmentImpl(storage, commandModule, logger));
+                    new StingerEnvironmentImpl(storage, commandModule, logger, stingerControl));
             try {
+                logger.info("Stinger start");
                 stinger.start();
             } finally {
                 stinger.stop();
+                logger.info("Stinger done");
+                logger.close();
             }
         } catch (Throwable t) {
             t.printStackTrace();

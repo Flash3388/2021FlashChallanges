@@ -20,7 +20,7 @@ public class FileProduct implements Product {
 
     @Override
     public ProductType getType() {
-        return StandardProductType.GET_FILE;
+        return StandardProductType.FILE;
     }
 
     @Override

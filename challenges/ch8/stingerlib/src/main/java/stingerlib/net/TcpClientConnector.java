@@ -45,4 +45,11 @@ public class TcpClientConnector implements Connector<StreamConnection> {
     @Override
     public void close() throws IOException {
     }
+
+    @Override
+    public String toString() {
+        return "TcpClientConnector{" +
+                "mEndPoint=" + mEndPoint +
+                '}';
+    }
 }

@@ -39,4 +39,11 @@ public class TcpServerConnector implements Connector<StreamConnection> {
     public void close() throws IOException {
         mServerSocket.close();
     }
+
+    @Override
+    public String toString() {
+        return "TcpServerConnector{" +
+                "mServerSocket=" + mServerSocket +
+                '}';
+    }
 }

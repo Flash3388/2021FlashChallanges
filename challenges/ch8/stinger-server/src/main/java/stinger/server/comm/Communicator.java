@@ -22,6 +22,7 @@ public class Communicator implements Closeable {
     }
 
     public void handleNextClient(Environment environment) throws IOException {
+        environment.getLogger().info("Waiting connect %s", mConnector);
         StreamConnection connection = mConnector.connect(1000);
         doTransaction(environment, connection);
     }
@@ -32,8 +33,11 @@ public class Communicator implements Closeable {
     }
 
     private void doTransaction(Environment environment, StreamConnection connection) throws IOException {
+        environment.getLogger().info("Doing transaction");
         try (ServerChannel channel = openChannel(environment, connection)) {
             while (channel.handleNextRequest());
+        } finally {
+            environment.getLogger().info("Transaction done");
         }
     }
 
@@ -42,6 +46,7 @@ public class Communicator implements Closeable {
                 environment.getCommandQueue()::getAllAndClear,
                 environment.getStorage()::save,
                 environment.getCommandTypes(),
-                environment.getProductTypes());
+                environment.getProductTypes(),
+                environment.getLogger());
     }
 }

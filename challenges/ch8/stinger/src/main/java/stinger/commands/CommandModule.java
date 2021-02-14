@@ -78,7 +78,10 @@ public class CommandModule implements Module, CommandQueue {
                         mLogger.error("CommandModule exec error", e);
                     }
                 }
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+            } catch (Throwable t) {
+                mLogger.error("Unexpected error in CommandModule", t);
+            }
 
             mLogger.info("Done CommandModule");
         }

@@ -17,4 +17,12 @@ public class CommandDefinition {
     public Parameters getParameters() {
         return mParameters;
     }
+
+    @Override
+    public String toString() {
+        return "CommandDefinition{" +
+                "mType=" + mType +
+                ", mParameters=" + mParameters +
+                '}';
+    }
 }

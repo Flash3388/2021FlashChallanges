@@ -25,7 +25,7 @@ public class Stinger {
 
         OnStart.onStart(mEnvironment);
 
-        while (true) {
+        while (!mEnvironment.getControl().isInShutdown()) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

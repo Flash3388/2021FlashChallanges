@@ -26,22 +26,22 @@ public class Environment {
     }
 
     public KnownTypes<GenericCommandType, Integer> getCommandTypes() {
-        return null;
+        return mKnownCommandTypes;
     }
 
     public KnownTypes<GenericProductType, Integer> getProductTypes() {
-        return null;
+        return mKnownProductTypes;
     }
 
     public CommandQueue getCommandQueue() {
-        return null;
+        return mCommandQueue;
     }
 
     public Storage getStorage() {
-        return null;
+        return mStorage;
     }
 
     public Logger getLogger() {
-        return null;
+        return mLogger;
     }
 }

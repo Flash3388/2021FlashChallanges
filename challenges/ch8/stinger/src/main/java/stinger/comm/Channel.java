@@ -50,7 +50,8 @@ public class Channel implements Closeable {
         int commandCount = mInput.readInt();
         List<Executable> commands = new ArrayList<>();
         for (int i = 0; i < commandCount; i++) {
-            commands.add(readCommand());
+            Executable executable = readCommand();
+            commands.add(executable);
         }
 
         return commands;

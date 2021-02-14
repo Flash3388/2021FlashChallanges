@@ -78,7 +78,7 @@ public class StorageIndex {
 
                 @Override
                 public boolean hasNext() {
-                    return currentIndex < storedProducts.size();
+                    return currentIndex < storedProducts.size() - 1;
                 }
 
                 @Override

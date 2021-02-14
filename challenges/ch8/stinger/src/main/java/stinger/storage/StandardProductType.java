@@ -3,7 +3,7 @@ package stinger.storage;
 import stingerlib.storage.ProductType;
 
 public enum StandardProductType implements ProductType {
-    GET_FILE(1);
+    FILE(1);
 
     private final int mIntValue;
 

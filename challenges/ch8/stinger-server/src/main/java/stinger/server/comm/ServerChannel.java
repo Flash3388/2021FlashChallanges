@@ -6,6 +6,7 @@ import stinger.server.util.KnownTypes;
 import stingerlib.commands.CommandDefinition;
 import stingerlib.commands.CommandSerializer;
 import stingerlib.commands.ParametersSerializer;
+import stingerlib.logging.Logger;
 import stingerlib.net.MessageType;
 import stingerlib.net.StreamConnection;
 import stingerlib.storage.ProductSerializer;
@@ -17,7 +18,6 @@ import java.io.DataInputStream;
 import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -27,6 +27,7 @@ public class ServerChannel implements Closeable {
     private final StreamConnection mConnection;
     private final Supplier<List<? extends CommandDefinition>> mCommandsSupplier;
     private final Consumer<StoredProduct> mProductConsumer;
+    private final Logger mLogger;
 
     private final DataOutput mOutput;
     private final DataInput mInput;
@@ -38,10 +39,12 @@ public class ServerChannel implements Closeable {
                          Supplier<List<? extends CommandDefinition>> commandsSupplier,
                          Consumer<StoredProduct> productConsumer,
                          KnownTypes<GenericCommandType, Integer> commandTypes,
-                         KnownTypes<GenericProductType, Integer> productTypes) throws IOException {
+                         KnownTypes<GenericProductType, Integer> productTypes,
+                         Logger logger) throws IOException {
         mConnection = connection;
         mCommandsSupplier = commandsSupplier;
         mProductConsumer = productConsumer;
+        mLogger = logger;
 
         mOutput = new DataOutputStream(mConnection.outputStream());
         mInput = new DataInputStream(mConnection.inputStream());
@@ -73,12 +76,15 @@ public class ServerChannel implements Closeable {
         mOutput.writeInt(commandDefinitions.size());
 
         for (CommandDefinition commandDefinition : commandDefinitions) {
+            mLogger.info("Sending command %s", commandDefinition);
             mCommandSerializer.serialize(mOutput, commandDefinition);
         }
     }
 
     private StoredProduct readProduct() throws IOException {
-        return mProductSerializer.deserialize(mInput);
+        StoredProduct product = mProductSerializer.deserialize(mInput);
+        mLogger.info("Received product %s", product.getId());
+        return product;
     }
 
     @Override

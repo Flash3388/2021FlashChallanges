@@ -1,4 +1,4 @@
-package stingerlib.logging;
+package stinger.logging;
 
 import stingerlib.storage.Product;
 

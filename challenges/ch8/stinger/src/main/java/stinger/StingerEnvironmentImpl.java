@@ -9,11 +9,13 @@ public class StingerEnvironmentImpl implements StingerEnvironment {
     private final Storage mStorage;
     private final CommandQueue mCommandQueue;
     private final Logger mLogger;
+    private final StingerControl mControl;
 
-    public StingerEnvironmentImpl(Storage storage, CommandQueue commandQueue, Logger logger) {
+    public StingerEnvironmentImpl(Storage storage, CommandQueue commandQueue, Logger logger, StingerControl control) {
         mStorage = storage;
         mCommandQueue = commandQueue;
         mLogger = logger;
+        mControl = control;
     }
 
     @Override
@@ -29,5 +31,10 @@ public class StingerEnvironmentImpl implements StingerEnvironment {
     @Override
     public Logger getLogger() {
         return mLogger;
+    }
+
+    @Override
+    public StingerControl getControl() {
+        return mControl;
     }
 }
