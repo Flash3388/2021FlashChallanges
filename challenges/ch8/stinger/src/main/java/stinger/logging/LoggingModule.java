@@ -1,9 +1,12 @@
 package stinger.logging;
 
+import stinger.Constants;
 import stinger.Module;
 import stinger.StingerEnvironment;
-import stinger.storage.Product;
-import stinger.storage.StorageException;
+import stingerlib.logging.Logger;
+import stingerlib.logging.LoggerControl;
+import stingerlib.storage.Product;
+import stingerlib.storage.StorageException;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -50,14 +53,19 @@ public class LoggingModule implements Module {
 
         @Override
         public void run() {
-            try {
-                while (!Thread.interrupted()) {
-                    Thread.sleep(60000);
+            mLogger.info("Starting LoggingModule");
 
-                    if (mLoggerControl.getRecordCount() == 1000) {
+            try {
+                long lastRotateMs = System.currentTimeMillis();
+                while (!Thread.interrupted()) {
+                    Thread.sleep(Constants.LOGGING_CHECK_INTERVAL_MS);
+
+                    if (mLoggerControl.getRecordCount() == Constants.LOGGING_RECORDS_ROTATE ||
+                        System.currentTimeMillis() - lastRotateMs >= Constants.LOGGING_TIME_ROTATE_MS) {
                         try {
                             mLogger.info("Doing rotation");
                             Product product = mLoggerControl.rotate();
+                            lastRotateMs = System.currentTimeMillis();
                             mStingerEnvironment.getStorage().store(product);
                         } catch (IOException | StorageException e) {
                             mLogger.error("LoggerModule Rotation", e);
@@ -65,6 +73,8 @@ public class LoggingModule implements Module {
                     }
                 }
             } catch (InterruptedException e) {}
+
+            mLogger.info("Done LoggingModule");
         }
     }
 }

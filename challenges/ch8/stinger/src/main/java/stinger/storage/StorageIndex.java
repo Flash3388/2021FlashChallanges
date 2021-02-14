@@ -1,9 +1,12 @@
 package stinger.storage;
 
-import stinger.db.Database;
-import stinger.db.DatabaseException;
-import stinger.db.JdbcDatabase;
-import stinger.logging.Logger;
+import stingerlib.db.Database;
+import stingerlib.db.DatabaseException;
+import stingerlib.db.JdbcDatabase;
+import stingerlib.logging.Logger;
+import stingerlib.storage.InFileStoredProduct;
+import stingerlib.storage.StorageException;
+import stingerlib.storage.StoredProduct;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -45,12 +48,12 @@ public class StorageIndex {
         }
     }
 
-    public void addProduct(PersistentStoredProduct product) throws StorageException {
+    public void addProduct(InFileStoredProduct product) throws StorageException {
         try {
             mDatabase.update("INSERT INTO pros (prid, type, path) VALUES (?,?,?)",
                     product.getId(),
                     product.getType().intValue(),
-                    product.getStoredPath().toAbsolutePath().toString());
+                    product.getDataPath().toAbsolutePath().toString());
         } catch (DatabaseException e) {
             throw new StorageException(e);
         }
@@ -59,13 +62,13 @@ public class StorageIndex {
     public Iterator<StoredProduct> storedProductsSnapshot() throws StorageException {
         try {
             List<Map<String, Object>> data = mDatabase.query("SELECT * FROM pros");
-            List<PersistentStoredProduct> storedProducts = data.stream().map((map)-> {
+            List<InFileStoredProduct> storedProducts = data.stream().map((map)-> {
                 String id = (String) map.get("prid");
                 int typeInt = (int) map.get("type");
                 String pathStr = (String) map.get("path");
-                return new PersistentStoredProduct(
+                return new InFileStoredProduct(
                         id,
-                        ProductType.fromInt(typeInt),
+                        StandardProductType.fromInt(typeInt),
                         Paths.get(pathStr)
                 );
             }).collect(Collectors.toList());
@@ -109,7 +112,7 @@ public class StorageIndex {
                 "path NVARCHAR NOT NULL"));
     }
 
-    private void remove(PersistentStoredProduct product) {
+    private void remove(InFileStoredProduct product) {
         try {
             mDatabase.update("DELETE FROM pros WHERE prid=?", product.getId());
         } catch (DatabaseException e) {
@@ -117,7 +120,7 @@ public class StorageIndex {
         }
 
         try {
-            Files.deleteIfExists(product.getStoredPath());
+            Files.deleteIfExists(product.getDataPath());
         } catch (IOException e) {
             mLogger.error("Storage remove path error", e);
         }

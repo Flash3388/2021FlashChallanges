@@ -3,13 +3,12 @@ package stinger;
 import stinger.comm.CommunicationModule;
 import stinger.comm.StandardCommunicator;
 import stinger.commands.CommandModule;
-import stinger.logging.FileLogger;
 import stinger.logging.LoggingModule;
 import stinger.storage.PersistentStorage;
 import stinger.storage.Storage;
 import stinger.storage.StorageIndex;
+import stingerlib.logging.FileLogger;
 
-import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.concurrent.ExecutorService;
@@ -27,10 +26,9 @@ public class Main {
                     files.getStorageRoot(),
                     StorageIndex.inFile(files.getStorageIndexDbPath(), logger)
             );
-            CommandModule commandModule = new CommandModule(executorService);
+            CommandModule commandModule = new CommandModule(executorService, logger);
             CommunicationModule communicationModule = new CommunicationModule(
-                    executorService,
-                    new StandardCommunicator(new InetSocketAddress("localhost", 10000))
+                    executorService, new StandardCommunicator(Constants.COMMUNICATION_END_POINT)
             );
             LoggingModule loggingModule = new LoggingModule(executorService, logger);
 

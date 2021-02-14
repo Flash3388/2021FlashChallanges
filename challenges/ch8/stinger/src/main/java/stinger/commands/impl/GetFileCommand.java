@@ -2,11 +2,11 @@ package stinger.commands.impl;
 
 import stinger.StingerEnvironment;
 import stinger.commands.Command;
-import stinger.commands.CommandException;
-import stinger.commands.Parameters;
-import stinger.storage.Product;
-import stinger.storage.StorageException;
 import stinger.storage.impl.FileProduct;
+import stingerlib.commands.CommandException;
+import stingerlib.commands.Parameters;
+import stingerlib.storage.Product;
+import stingerlib.storage.StorageException;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

@@ -1,8 +1,8 @@
 package stinger;
 
 import stinger.commands.CommandQueue;
-import stinger.logging.Logger;
 import stinger.storage.Storage;
+import stingerlib.logging.Logger;
 
 public interface StingerEnvironment {
 

@@ -3,7 +3,7 @@ package stinger.comm;
 import stinger.Constants;
 import stinger.Module;
 import stinger.StingerEnvironment;
-import stinger.logging.Logger;
+import stingerlib.logging.Logger;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -49,6 +49,8 @@ public class CommunicationModule implements Module {
 
         @Override
         public void run() {
+            mLogger.info("Starting CommunicationModule");
+
             try {
                 while (!Thread.interrupted()) {
                     Thread.sleep(Constants.COMMUNICATION_INTERVAL_MS);
@@ -62,6 +64,8 @@ public class CommunicationModule implements Module {
                     }
                 }
             } catch (InterruptedException e) { }
+
+            mLogger.info("Done CommunicationModule");
         }
     }
 }

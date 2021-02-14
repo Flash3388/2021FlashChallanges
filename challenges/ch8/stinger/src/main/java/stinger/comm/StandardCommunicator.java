@@ -2,8 +2,13 @@ package stinger.comm;
 
 import stinger.StingerEnvironment;
 import stinger.commands.Executable;
-import stinger.storage.StorageException;
-import stinger.storage.StoredProduct;
+import stingerlib.logging.Logger;
+import stingerlib.net.CommunicationException;
+import stingerlib.net.Connector;
+import stingerlib.net.StreamConnection;
+import stingerlib.net.TcpClientConnector;
+import stingerlib.storage.StorageException;
+import stingerlib.storage.StoredProduct;
 
 import java.io.IOException;
 import java.net.SocketAddress;
@@ -24,26 +29,32 @@ public class StandardCommunicator implements Communicator {
 
     @Override
     public TransactionResult doTransaction(StingerEnvironment environment) throws CommunicationException {
-        try (Transaction transaction = openTransaction()) {
-            List<Executable> commands = transaction.readCommands();
+        Logger logger = environment.getLogger();
+        logger.info("Opening transaction channel");
+        try (Channel channel = openChannel()) {
+            logger.info("Reading commands");
+            List<Executable> commands = channel.readCommands();
 
+            logger.info("Sending products");
             Iterator<StoredProduct> productIterator = environment.getStorage().storedProducts();
             while (productIterator.hasNext()) {
                 StoredProduct product = productIterator.next();
-                transaction.sendProduct(product);
+                logger.info("Sending product %s", product.getId());
+                channel.sendProduct(product);
                 productIterator.remove();
             }
 
+            logger.info("Transaction finished");
             return new TransactionResult(commands);
         } catch (StorageException | IOException e) {
             throw new CommunicationException(e);
         }
     }
 
-    private Transaction openTransaction() throws IOException {
+    private Channel openChannel() throws IOException {
         StreamConnection connection = mConnector.connect(100);
         try {
-            return new Transaction(connection);
+            return new Channel(connection);
         } catch (IOException e) {
             connection.close();
             throw e;

@@ -1,7 +1,9 @@
 package stinger.storage.impl;
 
-import stinger.storage.Product;
-import stinger.storage.ProductType;
+
+import stinger.storage.StandardProductType;
+import stingerlib.storage.Product;
+import stingerlib.storage.ProductType;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -18,7 +20,7 @@ public class FileProduct implements Product {
 
     @Override
     public ProductType getType() {
-        return ProductType.GET_FILE;
+        return StandardProductType.GET_FILE;
     }
 
     @Override

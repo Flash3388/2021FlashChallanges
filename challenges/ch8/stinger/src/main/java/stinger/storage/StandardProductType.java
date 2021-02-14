@@ -1,0 +1,29 @@
+package stinger.storage;
+
+import stingerlib.storage.ProductType;
+
+public enum StandardProductType implements ProductType {
+    GET_FILE(1);
+
+    private final int mIntValue;
+
+    StandardProductType(int intValue) {
+        mIntValue = intValue;
+    }
+
+    @Override
+    public int intValue() {
+        return mIntValue;
+    }
+
+    public static StandardProductType fromInt(int value) {
+        for (StandardProductType type : values()) {
+            if (type.intValue() == value) {
+                return type;
+            }
+        }
+
+        throw new EnumConstantNotPresentException(StandardProductType.class,
+                String.valueOf(value));
+    }
+}

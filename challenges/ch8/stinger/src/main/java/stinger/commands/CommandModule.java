@@ -2,7 +2,8 @@ package stinger.commands;
 
 import stinger.Module;
 import stinger.StingerEnvironment;
-import stinger.logging.Logger;
+import stingerlib.commands.CommandException;
+import stingerlib.logging.Logger;
 
 import java.util.Collection;
 import java.util.concurrent.BlockingQueue;
@@ -13,14 +14,16 @@ import java.util.concurrent.LinkedBlockingDeque;
 public class CommandModule implements Module, CommandQueue {
 
     private final ExecutorService mExecutorService;
-    private final BlockingQueue<Executable> mCommandQueue;
+    private final Logger mLogger;
 
+    private final BlockingQueue<Executable> mCommandQueue;
     private Future<?> mFuture;
 
-    public CommandModule(ExecutorService executorService) {
+    public CommandModule(ExecutorService executorService, Logger logger) {
         mExecutorService = executorService;
-        mCommandQueue = new LinkedBlockingDeque<>();
+        mLogger = logger;
 
+        mCommandQueue = new LinkedBlockingDeque<>();
         mFuture = null;
     }
 
@@ -39,11 +42,13 @@ public class CommandModule implements Module, CommandQueue {
 
     @Override
     public void addCommand(Executable executable) {
+        mLogger.info("Adding command %s", executable.toString());
         mCommandQueue.add(executable);
     }
 
     @Override
     public void addCommands(Collection<? extends Executable> executables) {
+        mLogger.info("Adding commands %s", executables.toString());
         mCommandQueue.addAll(executables);
     }
 
@@ -61,6 +66,8 @@ public class CommandModule implements Module, CommandQueue {
 
         @Override
         public void run() {
+            mLogger.info("Starting CommandModule");
+
             try {
                 while (!Thread.interrupted()) {
                     try {
@@ -72,6 +79,8 @@ public class CommandModule implements Module, CommandQueue {
                     }
                 }
             } catch (InterruptedException e) {}
+
+            mLogger.info("Done CommandModule");
         }
     }
 }

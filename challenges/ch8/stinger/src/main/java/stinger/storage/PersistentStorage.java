@@ -1,5 +1,10 @@
 package stinger.storage;
 
+import stingerlib.storage.InFileStoredProduct;
+import stingerlib.storage.Product;
+import stingerlib.storage.StorageException;
+import stingerlib.storage.StoredProduct;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -20,7 +25,7 @@ public class PersistentStorage implements Storage {
     @Override
     public void store(Product product) throws StorageException {
         try {
-            PersistentStoredProduct storedProduct = storeNew(product);
+            InFileStoredProduct storedProduct = storeNew(product);
             mStorageIndex.addProduct(storedProduct);
         } catch (IOException e) {
             throw new StorageException(e);
@@ -32,11 +37,11 @@ public class PersistentStorage implements Storage {
         return mStorageIndex.storedProductsSnapshot();
     }
 
-    private PersistentStoredProduct storeNew(Product product) throws IOException {
+    private InFileStoredProduct storeNew(Product product) throws IOException {
         String id = generateId();
         Path path = saveProductData(product, id);
 
-        return new PersistentStoredProduct(id, product.getType(), path);
+        return new InFileStoredProduct(id, product.getType(), path);
     }
 
     private String generateId() {

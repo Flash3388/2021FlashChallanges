@@ -2,8 +2,8 @@ package stinger.commands.impl;
 
 import stinger.StingerEnvironment;
 import stinger.commands.Command;
-import stinger.commands.CommandException;
-import stinger.commands.Parameters;
+import stingerlib.commands.CommandException;
+import stingerlib.commands.Parameters;
 
 import java.io.IOException;
 import java.nio.file.Files;

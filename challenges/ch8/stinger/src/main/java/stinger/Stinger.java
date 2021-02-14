@@ -1,5 +1,7 @@
 package stinger;
 
+import stingerlib.logging.Logger;
+
 import java.util.Set;
 
 public class Stinger {
@@ -13,7 +15,11 @@ public class Stinger {
     }
 
     public void start() {
+        Logger logger = mEnvironment.getLogger();
+        logger.info("Stinger start");
+
         for (Module module : mModules) {
+            logger.info("Starting module %s", module.getClass().getName());
             module.start(mEnvironment);
         }
 
@@ -29,8 +35,13 @@ public class Stinger {
     }
 
     public void stop() {
+        Logger logger = mEnvironment.getLogger();
+
         for (Module module : mModules) {
+            logger.info("Stopping module %s", module.getClass().getName());
             module.stop();
         }
+
+        logger.info("Stinger stop");
     }
 }

@@ -1,9 +1,9 @@
 package stinger;
 
 import stinger.commands.Executable;
-import stinger.commands.Parameters;
 import stinger.commands.impl.GetFileCommand;
 import stinger.commands.impl.PutFileCommand;
+import stingerlib.commands.Parameters;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;

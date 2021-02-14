@@ -13,6 +13,8 @@ include ':challenges:ch7:solution'
 include ':challenges:ch7:template'
 include ':challenges:ch7:pdf'
 include ':challenges:ch8:stinger'
+include ':challenges:ch8:stinger-server'
+include ':challenges:ch8:stingerlib'
 
 include ':challenges:ch1:team-solutions:team5'
 include ':challenges:ch3:team-solutions:team5'
