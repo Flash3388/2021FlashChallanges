@@ -4,6 +4,5 @@ mdn.db
 str/
 lgbt
 sto.db
-*.json
 *.bak
 *.log
