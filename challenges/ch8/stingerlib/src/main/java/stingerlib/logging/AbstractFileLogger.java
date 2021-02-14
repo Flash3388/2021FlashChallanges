@@ -23,14 +23,14 @@ public abstract class AbstractFileLogger implements Logger, Closeable {
     @Override
     public void info(String message, Object... args) {
         message = String.format(message, args);
-        message = String.format("[DEBUG]: %s", message);
+        message = String.format("[%d] [DEBUG]: %s", System.currentTimeMillis(), message);
         log(message);
     }
 
     @Override
     public void error(String message, Object... args) {
         message = String.format(message, args);
-        message = String.format("[ERROR]: %s", message);
+        message = String.format("[%d] [ERROR]: %s", System.currentTimeMillis(), message);
         log(message);
     }
 
@@ -40,7 +40,7 @@ public abstract class AbstractFileLogger implements Logger, Closeable {
         PrintWriter printWriter = new PrintWriter(stringWriter);
         throwable.printStackTrace(printWriter);
 
-        message = String.format("[ERROR]: %s:\n\t%s", message, stringWriter.toString());
+        message = String.format("[%d] [ERROR]: %s:\n\t%s", System.currentTimeMillis(), message, stringWriter.toString());
         log(message);
     }
 

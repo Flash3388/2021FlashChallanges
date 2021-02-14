@@ -20,6 +20,9 @@ public class Executable {
 
     @Override
     public String toString() {
-        return String.format("Executable{commandType=%s}", mCommand.getClass().getName());
+        return "Executable{" +
+                "mCommand=" + mCommand.getClass().getName() +
+                ", mParameters=" + mParameters +
+                '}';
     }
 }

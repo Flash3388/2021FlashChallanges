@@ -40,9 +40,9 @@ public class ParametersSerializer {
         } else if (value instanceof Double) {
             output.writeInt(2);
             output.writeDouble((Double) value);
+        } else {
+            throw new IOException("unknown type: " + value.getClass());
         }
-
-        throw new IOException("unknown type: " + value.getClass());
     }
 
     private Object readTypedData(DataInput input) throws IOException {

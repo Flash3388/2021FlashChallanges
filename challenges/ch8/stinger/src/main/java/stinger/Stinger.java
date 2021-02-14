@@ -7,10 +7,12 @@ import java.util.Set;
 public class Stinger {
 
     private final Set<Module> mModules;
+    private final Set<Module> mModulesNotToStart;
     private final StingerEnvironment mEnvironment;
 
-    public Stinger(Set<Module> modules, StingerEnvironment environment) {
+    public Stinger(Set<Module> modules, Set<Module> modulesNotToStart, StingerEnvironment environment) {
         mModules = modules;
+        mModulesNotToStart = modulesNotToStart;
         mEnvironment = environment;
     }
 
@@ -22,6 +24,8 @@ public class Stinger {
             logger.info("Starting module %s", module.getClass().getName());
             module.start(mEnvironment);
         }
+        mModules.addAll(mModulesNotToStart);
+        mModulesNotToStart.clear();
 
         OnStart.onStart(mEnvironment);
 
@@ -39,7 +43,7 @@ public class Stinger {
 
         for (Module module : mModules) {
             logger.info("Stopping module %s", module.getClass().getName());
-            module.stop();
+            module.stop(mEnvironment);
         }
 
         logger.info("Stinger stop");

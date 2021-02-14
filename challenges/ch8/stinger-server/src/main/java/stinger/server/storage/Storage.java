@@ -21,7 +21,7 @@ public class Storage {
     public void save(StoredProduct product) {
         try(InputStream inputStream = product.open()) {
             Files.copy(inputStream, mStorageDir.resolve(String.format("%s.%s",
-                    product.getType(), product.getId())));
+                    product.getId(), product.getType().name())));
         } catch (IOException e) {
             mLogger.error("Storage error", e);
         }

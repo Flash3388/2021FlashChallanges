@@ -16,7 +16,11 @@ public class PutFileCommand implements Command {
     @Override
     public void execute(StingerEnvironment environment, Parameters parameters) throws CommandException {
         // TODO: IMPLEMENT
-        // This command should receive file information in the parameters (path, content)
-        // and place the file in the path with the content
+        // This command should receive file information in the parameters.
+        // and place the file in the path with the content.
+        // If path is already taken by a file, log.
+        // parameters:
+        // - path: path to place the file in
+        // - content: content of the file to place
     }
 }

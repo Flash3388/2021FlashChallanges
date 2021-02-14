@@ -10,4 +10,5 @@ public interface StingerEnvironment {
     CommandQueue getCommandQueue();
     Logger getLogger();
     StingerControl getControl();
+    StingerModules getModules();
 }

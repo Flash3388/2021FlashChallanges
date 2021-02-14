@@ -27,4 +27,12 @@ public class GenericProductType implements ProductType, GenericType<Integer> {
     public boolean matchesKey(Integer key) {
         return mIntValue == key;
     }
+
+    @Override
+    public String toString() {
+        return "GenericProductType{" +
+                "mName='" + mName + '\'' +
+                ", mIntValue=" + mIntValue +
+                '}';
+    }
 }

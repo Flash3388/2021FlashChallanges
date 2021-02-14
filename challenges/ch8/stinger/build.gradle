@@ -10,6 +10,7 @@ repositories {
 
 dependencies {
     implementation project(':challenges:ch8:stingerlib')
+    implementation group: 'com.1stleg', name: 'jnativehook', version: '2.1.0'
     runtimeOnly group: 'org.xerial', name: 'sqlite-jdbc', version: '3.14.2'
 }
 

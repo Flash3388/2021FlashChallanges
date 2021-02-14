@@ -5,18 +5,16 @@ import stinger.commands.Command;
 import stingerlib.commands.CommandException;
 import stingerlib.commands.Parameters;
 
-public class GetFileCommand implements Command {
+public class DeletePathCommand implements Command {
 
     @Override
     public void execute(StingerEnvironment environment, Parameters parameters) throws CommandException {
         // TODO: IMPLEMENT
         // This command should receive file information in the parameters.
-        // and return a product containing the file data.
-        // If the file doesn't exist, log.
-        // If path is not a file, log.
+        // and delete the file in the path.
+        // If the file doesn't exist, do nothing.
+        // If path is a file, delete file. If path is a directory, delete directory.
         // parameters:
-        // - path: the path to the file to return
-        // result:
-        // - creates and stores product containing the file content. Use FileProduct.
+        // - path: path to the file to delete
     }
 }

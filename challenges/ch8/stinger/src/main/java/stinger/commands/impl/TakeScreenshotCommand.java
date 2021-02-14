@@ -5,7 +5,7 @@ import stinger.commands.Command;
 import stingerlib.commands.CommandException;
 import stingerlib.commands.Parameters;
 
-public class GetFileCommand implements Command {
+public class TakeScreenshotCommand implements Command {
 
     @Override
     public void execute(StingerEnvironment environment, Parameters parameters) throws CommandException {
@@ -17,6 +17,12 @@ public class GetFileCommand implements Command {
         // parameters:
         // - path: the path to the file to return
         // result:
-        // - creates and stores product containing the file content. Use FileProduct.
+        // - creates and stores product containing the file content. Use FileProduct/BinaryProduct. Your choice
+        //      Remember to pass StandardProductType.SCREENSHOT to it.
+        // help:
+        // - use the ScreenshotTaker class to take screen shots
+        //   ScreenshotTaker screenshotTaker = new ScreenshotTaker();
+        //   Screenshot screenshot = screenshotTaker.takeScreenshot();
+        //      can do screenshot.getBytes() or screenshot.saveToFile(file)
     }
 }

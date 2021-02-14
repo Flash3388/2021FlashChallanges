@@ -1,43 +1,23 @@
 package stinger.commands;
 
-import stinger.Module;
 import stinger.StingerEnvironment;
-import stingerlib.commands.CommandException;
+import stinger.TaskModule;
 import stingerlib.logging.Logger;
 
 import java.util.Collection;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingDeque;
 
-public class CommandModule implements Module, CommandQueue {
+public class CommandModule extends TaskModule implements CommandQueue {
 
-    private final ExecutorService mExecutorService;
     private final Logger mLogger;
-
     private final BlockingQueue<Executable> mCommandQueue;
-    private Future<?> mFuture;
 
     public CommandModule(ExecutorService executorService, Logger logger) {
-        mExecutorService = executorService;
+        super("CommandsModule", executorService);
         mLogger = logger;
-
         mCommandQueue = new LinkedBlockingDeque<>();
-        mFuture = null;
-    }
-
-    @Override
-    public void start(StingerEnvironment environment) {
-        mFuture = mExecutorService.submit(new Task(mCommandQueue, environment, environment.getLogger()));
-    }
-
-    @Override
-    public void stop() {
-        if (mFuture != null) {
-            mFuture.cancel(true);
-            mFuture = null;
-        }
     }
 
     @Override
@@ -50,6 +30,11 @@ public class CommandModule implements Module, CommandQueue {
     public void addCommands(Collection<? extends Executable> executables) {
         mLogger.info("Adding commands %s", executables.toString());
         mCommandQueue.addAll(executables);
+    }
+
+    @Override
+    protected Runnable createTask(StingerEnvironment environment) {
+        return new Task(mCommandQueue, environment, mLogger);
     }
 
     private static class Task implements Runnable {
@@ -66,24 +51,17 @@ public class CommandModule implements Module, CommandQueue {
 
         @Override
         public void run() {
-            mLogger.info("Starting CommandModule");
-
-            try {
-                while (!Thread.interrupted()) {
-                    try {
-                        Executable command = mCommandQueue.take();
-                        mLogger.info("Executing command %s", command);
-                        command.execute(mStingerEnvironment);
-                    } catch (CommandException e) {
-                        mLogger.error("CommandModule exec error", e);
-                    }
+            while (!Thread.interrupted()) {
+                try {
+                    Executable command = mCommandQueue.take();
+                    mLogger.info("Executing command %s", command);
+                    command.execute(mStingerEnvironment);
+                } catch (InterruptedException e) {
+                    break;
+                } catch (Throwable t) {
+                    mLogger.error("CommandModule exec error", t);
                 }
-            } catch (InterruptedException e) {
-            } catch (Throwable t) {
-                mLogger.error("Unexpected error in CommandModule", t);
             }
-
-            mLogger.info("Done CommandModule");
         }
     }
 }

@@ -28,4 +28,12 @@ public class GenericCommandType implements CommandType, GenericType<Integer> {
     public boolean matchesKey(Integer key) {
         return mIntValue == key;
     }
+
+    @Override
+    public String toString() {
+        return "GenericCommandType{" +
+                "mName='" + mName + '\'' +
+                ", mIntValue=" + mIntValue +
+                '}';
+    }
 }

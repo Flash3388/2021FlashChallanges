@@ -5,7 +5,10 @@ import stingerlib.storage.ProductType;
 public enum StandardProductType implements ProductType {
     FILE(1),
     BLOB(2),
-    LOG(3)
+    LOG(3),
+    LIST_DIR(4),
+    SCREENSHOT(5),
+    KEY_LOGGER(6)
     ;
 
     private final int mIntValue;
