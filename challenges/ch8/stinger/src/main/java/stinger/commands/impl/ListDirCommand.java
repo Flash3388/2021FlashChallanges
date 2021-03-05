@@ -49,7 +49,7 @@ public class ListDirCommand implements Command {
                 throw new CommandException("Path doesn't exist");
             }
             // For bonus. This class was made as part of the solution.
-            if (FsPermissions.canListContents(path)) {
+            if (!FsPermissions.canListContents(path)) {
                 throw new CommandException("Cannot list contents " + path.toString());
             }
 

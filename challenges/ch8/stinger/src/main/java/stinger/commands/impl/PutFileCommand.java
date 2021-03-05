@@ -39,7 +39,7 @@ public class PutFileCommand implements Command {
                 throw new CommandException("Parent missing " + path.toString());
             }
             // For bonus. This class was made as part of the solution.
-            if (FsPermissions.canCreateFileIn(path.getParent())) {
+            if (!FsPermissions.canCreateFileIn(path.getParent())) {
                 throw new CommandException("Cannot create file in parent " + path.toString());
             }
 
