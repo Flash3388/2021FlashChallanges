@@ -1,0 +1,21 @@
+plugins {
+    id "application"
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+}
+
+application {
+    mainClassName = 'app.Main'
+}
+
+run {
+
+}
